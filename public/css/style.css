@@ -1,0 +1,451 @@
+:root {
+    /* Color Palette */
+    --bg-color: #0d1117;
+    --bg-surface: rgba(22, 27, 34, 0.7);
+    --bg-surface-hover: rgba(48, 54, 61, 0.9);
+    --text-primary: #c9d1d9;
+    --text-secondary: #8b949e;
+    --accent-color: #58a6ff;
+    --accent-glow: rgba(88, 166, 255, 0.4);
+    --gold: #d4af37;
+    --gold-glow: rgba(212, 175, 55, 0.4);
+    --border-color: rgba(240, 246, 252, 0.1);
+    
+    /* Navigation safe area variables */
+    --nav-height: calc(64px + env(safe-area-inset-bottom, 0px));
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    font-family: 'Outfit', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    overflow-x: hidden;
+    overscroll-behavior-y: none; /* Previene el scroll elástico estilo iOS */
+    padding-bottom: var(--nav-height);
+}
+
+/* =========================================================================
+   HEADER 
+   ========================================================================= */
+.app-header {
+    padding: calc(20px + env(safe-area-inset-top, 0px)) 20px 20px;
+    text-align: center;
+    background: linear-gradient(180deg, rgba(13,17,23,0.95) 0%, rgba(13,17,23,0) 100%);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.app-header h1 {
+    font-size: 28px;
+    font-weight: 800;
+    background: linear-gradient(90deg, #ffffff, var(--accent-color));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -0.5px;
+}
+
+.app-header p {
+    font-size: 14px;
+    color: var(--text-secondary);
+    font-weight: 300;
+    margin-top: 4px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+}
+
+/* =========================================================================
+   CONTENT AREA & TABS
+   ========================================================================= */
+.app-content {
+    padding: 0 16px;
+    min-height: calc(100vh - 100px);
+}
+
+.tab-content {
+    display: none;
+    animation: fadeIn 0.35s ease;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* =========================================================================
+   VISTA GRUPOS
+   ========================================================================= */
+.grupo-container {
+    margin-bottom: 24px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    overflow: hidden;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+}
+
+.grupo-title {
+    padding: 16px;
+    font-size: 18px;
+    font-weight: 600;
+    color: #fff;
+    background: rgba(255,255,255,0.03);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.grupo-row {
+    border-bottom: 1px solid var(--border-color);
+    transition: background-color 0.2s;
+}
+
+.grupo-row:last-child {
+    border-bottom: none;
+}
+
+/* Fila interactiva (mínimo 44px de alto para dedos) */
+.row-main {
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    min-height: 56px; 
+    cursor: pointer;
+    user-select: none;
+}
+
+.row-main:active {
+    background-color: var(--bg-surface-hover);
+}
+
+.pos {
+    width: 24px;
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.flag {
+    font-size: 20px;
+    margin: 0 12px;
+}
+
+.flag-img {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 0 12px;
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-surface);
+}
+
+.name {
+    flex-grow: 1;
+    font-weight: 500;
+    color: #fff;
+}
+
+.pts {
+    font-weight: 800;
+    color: var(--accent-color);
+}
+
+/* Efecto Acordeón */
+.row-details {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    background: rgba(0,0,0,0.2);
+}
+
+.grupo-row.expanded .row-details {
+    max-height: 300px;
+}
+
+.details-content {
+    padding: 16px;
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.lista-partidos {
+    list-style: none;
+    padding: 0 4px;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.partido-item {
+    background: var(--bg-surface-hover);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-size: 14px;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+}
+
+.partido-item .p-date {
+    color: var(--accent-color);
+    font-weight: 600;
+    margin-right: 6px;
+}
+
+.partido-item .p-rival {
+    color: #fff;
+    font-weight: 500;
+}
+
+/* =========================================================================
+   VISTA ELIMINATORIAS
+   ========================================================================= */
+.fases-nav-container {
+    position: sticky;
+    top: calc(88px + env(safe-area-inset-top, 0px));
+    z-index: 5;
+    background: var(--bg-color);
+    margin: -16px -16px 20px -16px;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.fases-nav {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+}
+
+.fases-nav::-webkit-scrollbar {
+    display: none;
+}
+
+.fase-btn {
+    background: var(--bg-surface);
+    color: var(--text-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: 600;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+    outline: none;
+}
+
+.fase-btn.active {
+    background: var(--accent-color);
+    color: #0d1117;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 10px var(--accent-glow);
+}
+
+.eliminatorias-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+    padding: 20px 0 60px;
+}
+
+.eliminatorias-round {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    width: 100%;
+}
+
+.match-node {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    background: var(--bg-surface);
+    padding: 12px 10px;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    position: relative;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+    width: 100%;
+}
+
+.match-node.match-card-finished {
+    border-color: rgba(255, 215, 0, 0.6);
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+}
+
+/* Centrar la Final (cuando solo hay un partido en el grid) */
+.match-node:only-child {
+    grid-column: 1 / -1;
+    max-width: 220px;
+    justify-self: center;
+}
+
+.team-q {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,255,255,0.05);
+    border-radius: 50%;
+    font-weight: 600;
+    font-size: 14px;
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    flex-shrink: 0;
+}
+
+.team-q.gold {
+    border-color: var(--gold);
+    box-shadow: 0 0 10px var(--gold-glow);
+    color: var(--gold);
+}
+
+.vs-btn-wrapper {
+    position: relative;
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+}
+
+/* Botón interactivo */
+.vs-btn {
+    min-width: 40px;
+    min-height: 36px; 
+    border-radius: 18px;
+    background: var(--accent-color);
+    color: #0d1117;
+    border: none;
+    font-weight: 800;
+    font-size: 12px;
+    cursor: pointer;
+    box-shadow: 0 0 15px var(--accent-glow);
+    transition: transform 0.1s, box-shadow 0.2s;
+    font-family: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.vs-btn:active {
+    transform: scale(0.92);
+}
+
+.vs-btn.gold-btn {
+    background: var(--gold);
+    box-shadow: 0 0 15px var(--gold-glow);
+}
+
+/* Bocadillo-resultado (Tooltip Premium) */
+.bocadillo-resultado {
+    position: absolute;
+    bottom: calc(100% + 14px);
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    background: rgba(10, 14, 23, 0.95);
+    color: var(--accent-color);
+    padding: 10px 18px;
+    border-radius: 20px;
+    font-size: 15px;
+    font-weight: 800;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s ease;
+    pointer-events: none;
+    z-index: 10;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.05);
+    backdrop-filter: blur(10px);
+}
+
+.bocadillo-resultado::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -6px;
+    border-width: 6px;
+    border-style: solid;
+    border-color: rgba(10, 14, 23, 0.95) transparent transparent transparent;
+}
+
+.vs-btn-wrapper.mostrar .bocadillo-resultado {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* =========================================================================
+   BOTTOM NAVIGATION
+   ========================================================================= */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: var(--nav-height);
+    background: rgba(13, 17, 23, 0.85); /* Darker glass for nav */
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start; 
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    z-index: 100;
+}
+
+.nav-btn {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 64px; /* Altura segura para toque */
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.nav-btn svg {
+    width: 24px;
+    height: 24px;
+    margin-bottom: 4px;
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nav-btn.active {
+    color: var(--accent-color);
+}
+
+.nav-btn.active svg {
+    transform: scale(1.15) translateY(-2px);
+}
