@@ -16,6 +16,8 @@ define('DB_PASS', '');
 
 // 2. Configuración de APIs externas (ej. API-Football)
 define('API_KEY', 'TU_API_KEY_AQUI');
+define('LEAGUE_ID', ''); // ID del Mundial 2026 (placeholder)
+
 
 // 3. Otros parámetros de seguridad (usados en sync.php)
 define('CRON_TOKEN', 'TU_TOKEN_AQUI_EJ_SECRETO_CRON_2026');
